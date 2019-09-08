@@ -81,7 +81,7 @@
 <div id="decryptionError" style="display: none;">Incorrect Password!</div>
 <div id="noContentError" style="display: none;">No content to display!</div>
 <div id="encrypt-blog" style="display:none">
-U2FsdGVkX1+/XWPeUnIDPb9bg16AttpaO1R+Jup075if6hzYof3I5F7YBLqGr8NZoSmC46g+lB6CZcUoEUWsi06cLc8ZR/YrrLHXAM0uEG32zdwXkKePT3DoPKXK1rEG4LhtOAUjSPjq8DIiQiuMouGR333opF060sF29MO/I59JAtqkFDjNRnVvvUwZL0HwvWV54S3aKv/Fth/cMHeHjv/3Al57koYByvQnTCxztOaZzgSAdur1AJNjvmy0bMgo3dviLPmzB1otmFTdPO5c9ORmAH4rWvz4rwz9Buo1eFqylIII8iD2Y8lk6v7p2fJDHyP17M0FMHeiAbp8kqMSyLV7TrFxhy4otxb18SWP/lcE0+VMdLd7De5l7jLwsF1LQr4jnq2lYremY80vS0KygkSqcTqJJAC7UZxxtTlsNEDENCKC9ybbyvcTZzEbi/KZ7whghB0ed200FAMZGR6vTRiHVciHoTlo6GTNSUSdy+gHwYPRYz7LyAC3UqmdkMIPr2KBvHkd5ZB8P+cXexDM58atCOKErI70fXjCFYhKOSfuQdwxuHLF0LHQWcM64hZ3qph19NCrUS2BoBfAvH6Qu4zP2uoNzKWvdzpwnoTQeavHE6tiXA29rLa2vbV3i8ssGW/dHUyE+vlsN20euretGMwiVf5g5zu4plIcxLaEUklGpJk3LJXQ/vqoiFhBoVzSJQgf4XR5aO6drnsLDMUucQf+fns7BUVOlbhcf8QoqvBBg2NB11/AiIDlgVglYsebvk8IPT7m37kz4bp9f4/KdKzQV4sv1H6vX0u3k047J6888cZ+KRJfw93fM/2u1ItidFJk3QkLajuqC4UBmU4NzQ==
+U2FsdGVkX1/JFC1lxPoFz/VB4G8uL7UvsEBvRLaz/mWuicvppHL4zFykVSIWZH6UZEWwOcusHUawFTadrIiTgggkMA79AqMyPVJ4jpRsjOuBHD90oEXFMW46bFrrqNMaidr26suvNOqUE/KnriM+O7lggDk+uDSEt2g/h5Dhjf3yWiwRLR+qvzwoX07Frzdd5JEc1vfIkzVoGIWvjUcfKQiAidP1Mp+W2KccIPxDWBdhu+oO1OVXEPysDMo6nukfYY7vtdngAR7LxE4tvIwZqarwJdFCiWRI/s36NLKOOEpD2rk5CcYrHd+GbGVYHR4JqfcXx3Nh7jNWB85cAQ2KZsjGH9m+5f1Clsw7za329+CEoI+8Bw4/dSTD+239Q8KdGt4roZkZ7+uU94wSFdksTAuCbXM0QHgsIgPu9xoCkSHyEGX06xsxFFtZ2KB71uY3stOMqwlfETWQE49atb6QBfUylaZBvEYvMfOBgJRogjdro1vPDAz1H/CXAQHiAM/xSqyXoZPPtWc6GNNOWLbqHWWtuCmRoxDJ5T7RfDVCB7AR1ZRkwV6Nu5QG76xwYGDyHhavm1D5uS8duI1IPB1k5Nh8KA2ckww7sxwwjDojq5wJWflbfDXNuMLUjS01fDemOmgqgRyHRba3MQGK+wjkI8bTjUU52ncAyLb/FAa7ZhMwl5oQjAHzVN3h28xup9WI7lmEnN4FDI9gH8T+a6baSzuR+dBgSzp16Oc4Qch0U8vNl0ejpAzcMlsAAgOvkRHtcVsOW47NJPKM4YF3AoLob+768QzAZ61qod5EleJtwaWMvZZM9qQ5Q+sVypQqgnYX7X7Ns5JQvZw7W1ZYKD7FKw==
 </div>
 <script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
         </section>
@@ -136,7 +136,7 @@ U2FsdGVkX1+/XWPeUnIDPb9bg16AttpaO1R+Jup075if6hzYof3I5F7YBLqGr8NZoSmC46g+lB6CZcUo
   function getDisqus(isAgent) {
     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
     dsq.async = true
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src ='//' +'disqus.treemv.com/embed.js'; //反向代理了  disqus_shortname + .
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
   }
 </script>

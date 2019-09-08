@@ -10,7 +10,7 @@
     <link rel="icon" href="/favicon.ico">
   
     
-  <title>青鸟经历之汇编语言 | liuxk Info.</title>
+  <title>MySQL互为主从配置流程 | liuxk Info.</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -56,9 +56,9 @@
   <div class="content">
     <article>
         <section class="content markdown-body">
-          <h1>青鸟经历之汇编语言</h1>
+          <h1>MySQL互为主从配置流程</h1>
           <div class='post-meta'>
-            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年09月22日</time>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年09月08日</time>
             
               | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
@@ -73,16 +73,34 @@
                   <i class="fa fa-tag" aria-hidden="true"></i>
                 
                
-  <a href="/tags/#汇编" class='tag'>汇编</a>
+  <a href="/tags/#MySQL" class='tag'>MySQL</a>
 
 
             
           </div>
-          <p> 当年在青鸟培训机构学习的时候，自己琢磨的一点汇编经验笔<br>记，留存为电子版emmmmm…</p>
-<h1 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h1><p><img src="/resources/images/IMG_0287.jpeg" alt="汇编笔记1"></p>
-<h1 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h1><p><img src="/resources/images/IMG_0286.JPG" alt="汇编笔记2"></p>
-<h1 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h1><p><img src="/resources/images/IMG_0285.JPG" alt="汇编笔记3"></p>
-
+          <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>版本 MySQL5.7</p>
+<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><h2 id="1-部署两个MySQL服务，分别修改对应配置项。"><a href="#1-部署两个MySQL服务，分别修改对应配置项。" class="headerlink" title="1.部署两个MySQL服务，分别修改对应配置项。"></a>1.部署两个MySQL服务，分别修改对应配置项。</h2><pre><code>端口文件：my.cnf or my.ini  
+UUID：%datadir%/auto.cnf (注意：如两个MySQL是文件拷贝则必须修改，目录查找：show variables like &apos;datadir&apos;; )
+</code></pre><h2 id="2-分别增加用于同步的账号。"><a href="#2-分别增加用于同步的账号。" class="headerlink" title="2.分别增加用于同步的账号。"></a>2.分别增加用于同步的账号。</h2><pre><code>GRANT all privileges ON *.* TO tongbu@&apos;%&apos; IDENTIFIED BY &apos;123456&apos;;  
+FLUSH PRIVILEGES;  
+</code></pre><p>测试账号是否可登陆，（注意登陆主机权限范围）</p>
+<h2 id="3-分别修改配置文件和对应配置项。"><a href="#3-分别修改配置文件和对应配置项。" class="headerlink" title="3.分别修改配置文件和对应配置项。"></a>3.分别修改配置文件和对应配置项。</h2><pre><code>default-character-set=utf8  
+log-bin=MySQL-bin  
+relay-log=relay-bin  
+relay-log-index=relay-bin-index  
+server-id=1 #指定不同的ID  
+binlog-do-db=umsdb      #需要同步的库  
+replicate-do-db=umsdb    #需要同步的库  
+replicate-ignore-table=umsdb.boco_tb_menu #可以忽略的表  
+</code></pre><h2 id="4-分别重启"><a href="#4-分别重启" class="headerlink" title="4.分别重启"></a>4.分别重启</h2><h2 id="5-分别进入控制台配置同步的主库信息"><a href="#5-分别进入控制台配置同步的主库信息" class="headerlink" title="5.分别进入控制台配置同步的主库信息"></a>5.分别进入控制台配置同步的主库信息</h2><pre><code>(注意：5.6版本改为控制台修改，之前为配置在配置文件里(第三步）)
+stop slave;  //关闭Slave  
+change master to master_host=&apos;localhost&apos;,master_port=3307,master_user=&apos;tongbu&apos;,master_password=&apos;123456&apos;;#指定master信息       master-connect-retry=30   #同步的时间间隔，单位是秒
+start slave;  //开启Slave
+</code></pre><h2 id="6-分别重启"><a href="#6-分别重启" class="headerlink" title="6.分别重启"></a>6.分别重启</h2><h2 id="7-分别查看状态"><a href="#7-分别查看状态" class="headerlink" title="7.分别查看状态"></a>7.分别查看状态</h2><pre><code>show slave status
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+都为yes为正常状态。
+</code></pre>
         </section>
     </article>
     
@@ -101,7 +119,7 @@
     <div class="toc-container">
         <h1>目录</h1>
         <div class="content">
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1"><span class="toc-number">1.</span> <span class="toc-text">1.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2"><span class="toc-number">2.</span> <span class="toc-text">2.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3"><span class="toc-number">3.</span> <span class="toc-text">3.</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#环境"><span class="toc-number">1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#流程"><span class="toc-number">2.</span> <span class="toc-text">流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-部署两个MySQL服务，分别修改对应配置项。"><span class="toc-number">2.1.</span> <span class="toc-text">1.部署两个MySQL服务，分别修改对应配置项。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-分别增加用于同步的账号。"><span class="toc-number">2.2.</span> <span class="toc-text">2.分别增加用于同步的账号。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-分别修改配置文件和对应配置项。"><span class="toc-number">2.3.</span> <span class="toc-text">3.分别修改配置文件和对应配置项。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-分别重启"><span class="toc-number">2.4.</span> <span class="toc-text">4.分别重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-分别进入控制台配置同步的主库信息"><span class="toc-number">2.5.</span> <span class="toc-text">5.分别进入控制台配置同步的主库信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-分别重启"><span class="toc-number">2.6.</span> <span class="toc-text">6.分别重启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-分别查看状态"><span class="toc-number">2.7.</span> <span class="toc-text">7.分别查看状态</span></a></li></ol></li></ol>
         </div>
     </div>
     
@@ -112,8 +130,8 @@
 <script type="text/javascript">
   /* * * CONFIGURATION VARIABLES * * */
   var disqus_shortname = "liuxko";
-  var disqus_identifier = "https://liuxko.github.io/2018/09/22/青鸟经历之汇编语言/";
-  var disqus_url = "https://liuxko.github.io/2018/09/22/青鸟经历之汇编语言/";
+  var disqus_identifier = "https://liuxko.github.io/2019/09/08/MySQL互为主从配置流程/";
+  var disqus_url = "https://liuxko.github.io/2019/09/08/MySQL互为主从配置流程/";
 
   isAgent(getDisqus)
 
